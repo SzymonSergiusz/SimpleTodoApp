@@ -10,7 +10,7 @@ data class Note(
     @PrimaryKey(autoGenerate = true)
     @NonNull
     @ColumnInfo(name="noteId")
-    val uid: Int = 0,
+    val id: Int = 0,
 
     @ColumnInfo(name="title")
     var title: String,

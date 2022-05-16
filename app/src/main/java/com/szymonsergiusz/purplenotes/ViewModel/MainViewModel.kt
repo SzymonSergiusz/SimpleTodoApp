@@ -5,8 +5,11 @@ import androidx.lifecycle.LiveData
 import com.szymonsergiusz.purplenotes.database.AppDatabase
 import com.szymonsergiusz.purplenotes.database.NoteRepository
 import com.szymonsergiusz.purplenotes.notes.Note
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class MainViewModel(application: Application) {
+    private val _revealedCardIdsList = MutableStateFlow(listOf<Int>())
+    val revealedCardIdsList: List<Int> = mutableListOf()
     val allNotes: LiveData<List<Note>>
     private val repository: NoteRepository
 
@@ -32,5 +35,19 @@ class MainViewModel(application: Application) {
 
     fun deleteAllNotes() {
         repository.deleteAll()
+    }
+
+    fun onItemExpanded(cardId: Int) {
+        if (_revealedCardIdsList.value.contains(cardId)) return
+        _revealedCardIdsList.value = _revealedCardIdsList.value.toMutableList().also { list ->
+            list.add(cardId)
+        }
+    }
+
+    fun onItemCollapsed(cardId: Int) {
+        if (!_revealedCardIdsList.value.contains(cardId)) return
+        _revealedCardIdsList.value = _revealedCardIdsList.value.toMutableList().also { list ->
+            list.remove(cardId)
+        }
     }
 }
