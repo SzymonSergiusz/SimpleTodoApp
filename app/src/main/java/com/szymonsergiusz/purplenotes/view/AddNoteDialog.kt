@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.Dialog
 import com.szymonsergiusz.purplenotes.ViewModel.MainViewModel
-import com.szymonsergiusz.purplenotes.notes.Note
 
 @Composable
 fun AddNoteDialog(
@@ -34,6 +33,42 @@ fun AddNoteDialog(
                     openDialog.value = false
                 }) {
                     Text("Add")
+                }
+            }
+
+        })
+    }
+}
+@Composable
+fun EditNoteDialog(
+    note: Note,
+    viewModel: MainViewModel,
+    dialogState: MutableState<Boolean>
+) {
+    if (dialogState.value) {
+        Dialog(onDismissRequest = { dialogState.value = false }, content = {
+
+            Column(modifier = Modifier.background(Color.White)) {
+
+
+                var newTitle by remember { mutableStateOf(note.title) }
+                TextField(value = newTitle, onValueChange = { newTitle = it })
+
+
+                var newDescription by remember { mutableStateOf(note.desc) }
+                TextField(value = newDescription, onValueChange = { newDescription = it })
+                Button(onClick = {
+
+                    note.apply {
+                        title = newTitle
+                        desc = newDescription
+                    }
+
+                    viewModel.updateNote(note)
+
+                    dialogState.value = false
+                }) {
+                    Text("Save")
                 }
             }
 
