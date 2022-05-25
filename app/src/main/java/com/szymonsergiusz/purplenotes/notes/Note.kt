@@ -20,20 +20,4 @@ data class Note(
 
     @ColumnInfo(name = "priority")
     var priority: Int = 0
-    ) {
-
-    fun updateTitle(newTitle: String) {
-        title = newTitle
-    }
-
-    fun updateDesc(newDesc: String) {
-        desc = newDesc
-    }
-
-    fun getNextPrior() {
-        priority++
-        if (priority == 3)
-            priority = 0
-    }
-
-}
+    )
